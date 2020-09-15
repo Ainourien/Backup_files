@@ -4,6 +4,7 @@ import shutil
 import hashlib
 import re
 from shutil import copy
+import datetime
 
 cwd = Path(__file__).parents[0]
 os.chdir(cwd)
@@ -80,5 +81,10 @@ for i in range(len(list_of_src_files)):
         if re.split('\\\\', list_of_new_dest_files[i])[-1] == re.split('\\\\', list_of_src_files[i])[-1]: # Проверяем, совпадают ли имена файлов. Если да, то 
             if get_hash_md5(list_of_new_dest_files[i]) != get_hash_md5(list_of_src_files[i]): # проверяем, совпадает ли хэш-сумма. Если нет, то копируем, если да, то ничего не делаем в этом цикле.
                     copy(list_of_src_files[i], list_of_new_dest_files[i])
-    else: copy(list_of_src_files[i], list_of_new_dest_files[i]) 
+                    print('duplicated ' + list_of_src_files[i] + ' at ' + str(datetime.datetime.now()))
+    else: 
+        copy(list_of_src_files[i], list_of_new_dest_files[i]) 
+        print('duplicated ' + list_of_src_files[i] + ' at ' + str(datetime.datetime.now()))
+        
 # Получается единственное условие, при котором цикл ничего не делает - это если совпадают имена файлов и их хэш-суммы.
+
