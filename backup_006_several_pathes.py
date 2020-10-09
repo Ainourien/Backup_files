@@ -58,6 +58,8 @@ for i in range(len(src_folder)):
 
 list_of_new_dest_files = []
 for j in range(len(src_folder)):
+    list_of_src_files = []
+    list_of_new_dest_files = []
     list_of_src_files = file_and_path(src_folder[j])
     for i in range(len(list_of_src_files)):
         list_of_new_dest_files.append(list_of_src_files[i].replace(src_folder[j], dest_folder[j]))
