@@ -15,7 +15,7 @@ with open("..\\source_pathes.txt") as f:
 
 src_folder = []
 for i in range(len(src_value)):
-    a = re.sub('\n', '', src_value[i]) # Убирает символ переноса строки (\n) в конце каждого элемента списка
+    a = re.sub('\n', '', src_value[i]) # Убирает символ переноса строки (\n) в конце каждого элемента списка, если он есть
     src_folder.append(a)
 
 # В файле записан путь куда копировать. Получаем его и помещаем в массив:
@@ -24,15 +24,14 @@ with open("..\\destination_pathes.txt") as f:
     
 dest_folder = []
 for i in range(len(dest_value)):
-    a = re.sub('\n', '', dest_value[i]) # Убирает символ переноса строки (\n) в конце каждого элемента списка
+    a = re.sub('\n', '', dest_value[i]) # Убирает символ переноса строки (\n) в конце каждого элемента списка, если он есть
     dest_folder.append(a)
 
 list_of_dest_folders = []
 list_of_src_files = []
 list_of_dest_files = []
 
-# Надо как-то сгруппировать эти две последующие функции в одну.
-# Они используют os.walk, чтобы обойти все папки по указанному пути и создают два списка:
+# Две последующие функции используют os.walk, чтобы обойти все папки по указанному пути и создают два списка:
 # Список файлов и список папок.
 def file_and_path(path):
     list_of_files = []
@@ -54,7 +53,7 @@ list_of_dest_files = file_and_path(dest_folder[0])
 list_of_dest_folders = folders_and_path(src_folder[0])
 
 # Создаем дерево подпапок, которое содержится по указанному в файле пути. Если какая-то папка уже существует, то пропускаем её.
-# Сделать это отдельно нужно потому что функция copy из библиотеки shutil сама все директории по пути файла не создаёт.
+# Сделать это отдельно нужно, потому что функция copy из библиотеки shutil сама все директории по пути файла не создаёт.
 for i in range(len(list_of_dest_folders)):
     os.makedirs(list_of_dest_folders[i].replace(src_folder[0], dest_folder[0]), exist_ok=True)
 
@@ -90,7 +89,7 @@ for i in range(len(list_of_src_files)):
         copy(list_of_src_files[i], list_of_new_dest_files[i]) 
         print('duplicated ' + list_of_src_files[i] + ' at ' + str(datetime.datetime.now()))
         
-# Получается единственное условие, при котором цикл ничего не делает - это если совпадают имена файлов и их хэш-суммы.
+# Получается единственное условие, при котором цикл ничего не делает - это если совпадают имена файлов и дата изменения source равна или меньше даты изменения destination.
 
 
 '''
